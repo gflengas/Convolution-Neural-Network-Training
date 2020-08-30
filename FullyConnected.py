@@ -1,36 +1,37 @@
 import numpy as np
-
+import Activations as act
 class FullyConnected:
     #fully connected layer using softmax as activation function
 
     def __init__(self, length, nodes):
-        self.weights= np.random.randn(length, nodes)/length
-        self.biases= np.zeros(nodes)
+        self.weights= np.random.randn(length, nodes)*np.sqrt(2/length) #/length
+        self.weights=self.weights.astype('float32')
+        #self.weights= np.zeros([length, nodes],dtype='float32')
+        self.biases= np.zeros(nodes, dtype='float32')
+        self.activ = act.Softmax()
 
     def forward(self, data):
         #forward pass of FC layer over the data given as output
         #from maxpool layer and returns a 1d array with the probability values
-        self.latestDataShape=data.shape #save to reconstruct in backprop
-        #flatten 
-        flattened_shape = data.shape[:1] + (-1,)
-        data= np.reshape(data, flattened_shape)
-        #linear
         self.latestData=data #store for backprop
         total= np.dot(data, self.weights)+self.biases
         #softmax
-        self.latestTotal =total #store for backprop
-        x = total - np.max(total, axis=1, keepdims=True)
-        exp_x = np.exp(x)
-        s = exp_x / np.sum(exp_x, axis=1, keepdims=True)
+        s=self.activ.forward(total)
         return s
         
     
-    def Backprop(self,pre_grad,learn_rate):
-        der = np.ones(self.latestTotal.shape)
-        act_grad = pre_grad*der
-        dw = np.dot(self.latestData.T, act_grad)
-        db = np.mean(act_grad, axis=0)
-        self.weights -= learn_rate * dw
-        self.biases -= learn_rate * db
-        #unflatten
-        return np.reshape(np.dot(act_grad,self.weights.T),self.latestDataShape)
+    def Backprop(self,pre_grad):
+        act_grad = pre_grad*self.activ.derivative()
+        self.dw = np.dot(self.latestData.T, act_grad)
+        self.db = np.mean(act_grad, axis=0, dtype='float32')
+        grad= np.dot(act_grad,self.weights.T)
+        return grad
+    
+    def getWeights(self):
+        return self.weights
+    
+    def Update(self,learn_rate):
+        # Update filters
+        self.weights -= learn_rate * self.dw
+        self.biases -= learn_rate * self.db
+        return

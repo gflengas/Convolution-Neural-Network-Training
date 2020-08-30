@@ -67,3 +67,15 @@ def plotData(loss_history,AccuracyTrain_history,AccuracyTest_history):
     plt.gcf().set_size_inches(15, 12)
     plt.show()
     return
+
+def plotWeights(Conv,FC):
+    plt.subplot(2, 1, 1)
+    plt.hist(Conv)
+    plt.title('Conv layer Weights')
+
+    plt.subplot(2,1,2)
+    plt.hist(FC)
+    plt.title('FC layer Weights')
+    plt.gcf().set_size_inches(15, 12)
+    plt.show()
+    return

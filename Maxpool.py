@@ -2,39 +2,29 @@ import numpy as np
 
 class MaxPool:
     
-    def RegionScanner(self,img):
-        #Finds all the possible 2x2 image regions to pool over
-        y,x,_= img.shape
-        ym= y//2
-        xm= x//2
-        for i in range(ym):
-            for j in range(xm):
-                imreg= img[(i * 2):(i * 2 + 2), (j * 2):(j * 2 + 2)]
-                yield imreg, i, j
-    
-    def forward(self,data):
+    def forward(self,input):
         #forward pass of maxpool layer over the data given as output
         #from conv layer and returns a 3d array[y / 2, x / 2, FiltersNum]
-        self.latestData=data #store for backprop
-        b,y,x,FiltersNum=data.shape
-        output= np.zeros((b,y//2, x//2, FiltersNum))
+        self.latestInput=input #store for backprop
+        b,FiltersNum,h,w=input.shape
+        output= np.zeros((b,FiltersNum,h//2, w//2), dtype='float32')
         for batch in range(b):
-            for imreg, i , j in self.RegionScanner(data[batch]):
-                output[batch,i, j] = np.amax(imreg, axis=(0, 1))
+            for f in range(FiltersNum):
+                for i in range(h//2):
+                    for j in range(w//2):
+                        output[batch,f,i,j] = np.amax(input[batch,f, i:i+2, j:j+2])
         return output
     
     def Backprop(self, pre_grad):
-        grad = np.zeros(self.latestData.shape)
-        b=self.latestData.shape[0]
+        grad = np.zeros(self.latestInput.shape, dtype='float32')
+        b,FiltersNum,y,x=self.latestInput.shape
         for batch in range(b):
-            for im_region, i, j in self.RegionScanner(self.latestData[batch]):
-                h, w, f = im_region.shape
-                amax = np.amax(im_region, axis=(0, 1))
-                for i2 in range(h):
-                    for j2 in range(w):
-                        for f2 in range(f):
-                            # If this pixel was the max value, copy the gradient to it.
-                            if im_region[i2, j2, f2] == amax[f2]:
-                                grad[batch,i * 2 + i2, j * 2 + j2,f2] = pre_grad[batch,i, j, f2]
+            for f in range(FiltersNum):
+                for i in range(y//2):
+                    for j in range(x//2):
+                        patch = self.latestInput[batch, f, i:i+2, j:j+2]
+                        max_idx = np.unravel_index(patch.argmax(), patch.shape)
+                        y_shift, x_shift = i*2+ max_idx[0], j*2+max_idx[1]
+                        grad[batch,f,y_shift,x_shift] = pre_grad[batch,f,i,j]  
 
         return grad
