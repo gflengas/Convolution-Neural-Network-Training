@@ -7,7 +7,7 @@ class MaxPool:
         #from conv layer and returns a 3d array[y / 2, x / 2, FiltersNum]
         self.latestInput=input #store for backprop
         b,FiltersNum,h,w=input.shape
-        output= np.zeros((b,FiltersNum,h//2, w//2), dtype='float32')
+        output= np.zeros((b,FiltersNum,h//2, w//2), dtype='float16')
         for batch in range(b):
             for f in range(FiltersNum):
                 for i in range(h//2):
@@ -16,7 +16,7 @@ class MaxPool:
         return output
     
     def Backprop(self, pre_grad):
-        grad = np.zeros(self.latestInput.shape, dtype='float32')
+        grad = np.zeros(self.latestInput.shape, dtype='float16')
         b,FiltersNum,y,x=self.latestInput.shape
         for batch in range(b):
             for f in range(FiltersNum):

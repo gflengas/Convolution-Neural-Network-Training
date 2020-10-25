@@ -1,4 +1,5 @@
 import numpy as np
+from numba import jit, cuda 
 import math
 import random
 import ConvLayer as c
@@ -10,24 +11,24 @@ import time
 from numpy.random import seed
 import tensorflow as tf
 import matplotlib.pyplot as plt
-seed(1)
-tf.random.set_seed(1)
+#seed(1)
+#tf.random.set_seed(1)
 start_time = time.time()
 #read data
 train_images, train_labels =dr.load_mnist_train()
 permutation = np.random.permutation(len(train_images))
 train_images = train_images[permutation]
 train_labels = train_labels[permutation]
-train_images=train_images[:2000].reshape((-1, 1, 28, 28)) / 255.0
-train_labels=train_labels[:2000]
+train_images=train_images[:10000].reshape((-1, 1, 28, 28)) / 255.0
+train_labels=train_labels[:10000]
 
 
 test_images, test_labels = dr.load_mnist_test()
 permutation2 = np.random.permutation(len(test_images))
 test_images = test_images[permutation2]
 test_labels = test_labels[permutation2]
-test_images=test_images[:500].reshape((-1, 1, 28, 28)) / 255.0
-test_labels=test_labels[:500]
+test_images=test_images[:1000].reshape((-1, 1, 28, 28)) / 255.0
+test_labels=test_labels[:1000]
 
 train_labels = dr.one_hot(train_labels)
 test_labels = dr.one_hot(test_labels)
@@ -50,11 +51,11 @@ def accuracy(outputs, targets):
     y_predicts = np.argmax(outputs, axis=1)
     y_targets = np.argmax(targets, axis=1)
     acc = y_predicts == y_targets
-    return np.mean(acc,dtype='float32')
+    return np.mean(acc,dtype='float16')
 
 def loss(epsilon, out, label):
     out = np.clip(out, epsilon, 1. - epsilon)
-    return np.mean(-np.sum(label * np.log(out), axis=-1,dtype='float32'))
+    return np.mean(-np.sum(label * np.log(out), axis=-1,dtype='float16'))
     #return 0.5 * np.mean(np.sum(np.power(out - label, 2), axis=1))
 
 #forwad pass of the network
@@ -91,9 +92,9 @@ def Update(learning_rate=0.01):
 loss_history = []
 AccuracyTrain_history = []
 AccuracyTest_history = []
-epoch=10
-batch_size=100
-test_batch_size=100
+epoch=20
+batch_size=128
+test_batch_size=128
 AccuracyPerEpoc =[]
 LossPerEpoc = []
 TestAccuracyPerEpoc = []

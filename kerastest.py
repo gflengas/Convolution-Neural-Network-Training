@@ -7,8 +7,8 @@ from keras.utils import to_categorical
 from keras.optimizers import SGD
 
 train_images, train_labels =dr.load_mnist_train()
-train_images=train_images[:20000]
-train_labels=train_labels[:20000]
+train_images=train_images[:10000]
+train_labels=train_labels[:10000]
 test_images, test_labels = dr.load_mnist_test()
 test_images=test_images[:1000]
 test_labels=test_labels[:1000]
@@ -28,12 +28,12 @@ model = Sequential([
   Dense(10, activation='softmax',kernel_initializer='lecun_normal'),
 ])
 
-model.compile(SGD(lr=.001), loss='categorical_crossentropy', metrics=['accuracy'])
+model.compile(SGD(lr=.01), loss='categorical_crossentropy', metrics=['accuracy'])
 
 history=model.fit(
   train_images,
   to_categorical(train_labels),
-  batch_size=100,
+  batch_size=128,
   epochs=20,
   validation_data=(test_images, to_categorical(test_labels)),
 )

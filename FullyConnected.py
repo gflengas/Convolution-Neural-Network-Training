@@ -5,9 +5,8 @@ class FullyConnected:
 
     def __init__(self, length, nodes):
         self.weights= np.random.randn(length, nodes)*np.sqrt(2/length) #/length
-        self.weights=self.weights.astype('float32')
-        #self.weights= np.zeros([length, nodes],dtype='float32')
-        self.biases= np.zeros(nodes, dtype='float32')
+        self.weights=self.weights.astype('float16')
+        self.biases= np.zeros(nodes, dtype='float16')
         self.activ = act.Softmax()
 
     def forward(self, data):
@@ -23,7 +22,8 @@ class FullyConnected:
     def Backprop(self,pre_grad):
         act_grad = pre_grad*self.activ.derivative()
         self.dw = np.dot(self.latestData.T, act_grad)
-        self.db = np.mean(act_grad, axis=0, dtype='float32')
+        #self.db = np.sum(act_grad, axis=0, dtype='float16')
+        self.db = np.mean(act_grad, axis=0, dtype='float16')
         grad= np.dot(act_grad,self.weights.T)
         return grad
     
