@@ -50,10 +50,10 @@ Since we are working with batches, we need to make predictions over multiple exa
  
 ![network flow](https://github.com/gflengas/Convolution-Neural-Network-Training/blob/master/pictuers/pic5.png)
 
- The parameters of the neural network are adjusted according to the following formulae:
+ The parameters of the neural network are adjusted according to the following formulae:<br/>
 <img src="https://latex.codecogs.com/gif.latex?W^{[l]}={W^{[l]}-adW^{[l]}}&space;\newline&space;b^{[l]}={b^{[l]}-adb^{[l]}}" title="W^{[l]}={W^{[l]}-adW^{[l]}} \newline b^{[l]}={b^{[l]}-adb^{[l]}}" />
 
-*a* represents learning rate, which allows us to control the value of the performed adjustment. A low learning rate can result in a very slow learning network and a high one can result in to not be able to hit the minimum. The parameters *dW* and *db* are calculated using the chain rule, partial derivatives of loss function with respect to *W*, and *b*. The size of dW and db are the same as that of W and b respectively. These variables are calculated following the formulas:
+*a* represents learning rate, which allows us to control the value of the performed adjustment. A low learning rate can result in a very slow learning network and a high one can result in to not be able to hit the minimum. The parameters *dW* and *db* are calculated using the chain rule, partial derivatives of loss function with respect to *W*, and *b*. The size of dW and db are the same as that of W and b respectively. These variables are calculated following the formulas:<br/>
 <img src="https://latex.codecogs.com/gif.latex?dZ^{[l]}={dA^{[l]}*g'{Z^{[l]}}}&space;\newline&space;dW^{[&space;l&space;]}=&space;{dL&space;\over&space;dW^{[&space;l&space;]}}&space;=&space;{1&space;\over&space;{m}}&space;dZ^{[&space;l&space;]}&space;A^{[&space;l-1&space;]T}&space;\newline&space;db^{[&space;l&space;]}=&space;{dL&space;\over&space;db^{[&space;l&space;]}}&space;=&space;{1&space;\over&space;{m}}&space;\sum_{i=1}^{m}&space;{dZ^{[&space;l&space;](i)}}&space;\newline&space;dA^{[&space;l&space;]}=&space;{dL&space;\over&space;dA^{[&space;l&space;-1]}}&space;=&space;W^{[l]T}dZ^{[l]}" title="dZ^{[l]}={dA^{[l]}*g'{Z^{[l]}}} \newline dW^{[ l ]}= {dL \over dW^{[ l ]}} = {1 \over {m}} dZ^{[ l ]} A^{[ l-1 ]T} \newline db^{[ l ]}= {dL \over db^{[ l ]}} = {1 \over {m}} \sum_{i=1}^{m} {dZ^{[ l ](i)}} \newline dA^{[ l ]}= {dL \over dA^{[ l -1]}} = W^{[l]T}dZ^{[l]}" />
 * *Z*: output of a layer
 * *A*: activation output of the corresponding layer 
