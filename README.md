@@ -5,19 +5,25 @@
 
  &nbsp;&nbsp;&nbsp;&nbsp;The current network for CNN training with Mini-Batch Gradient Descent is developed onpure python using the NumPy library and trained with the MNIST data set. It consists of a Convlayer with 12 3x3 filters initialized with He initialization using Relu as activation function, a Maxpool layer with pool size 2, and a fully connected layer using Softmax as activation function. To measure the accuracy of the network, the Categorical Cross-Entropy Loss functionis used. The training parameters that were used for the results presented are: batch size= 128, learning rate=0.01, 10000 training samples, and 1000 test samples. \
 
-----pic1\
+![network image](https://github.com/gflengas/Convolution-Neural-Network-Training/blob/master/pictuers/pic1.png)
+
 Using the network described a Keras model was implemented so comparisons could be made. The run of that model gave the following results for a 20 epochs test:\
 
--- pic2\
+![keras results](https://github.com/gflengas/Convolution-Neural-Network-Training/blob/master/pictuers/pic2.png)
+
 Running the same network on the NumPy based implementation, the results are the following:\
---pic3\
+
+![NumPy results](https://github.com/gflengas/Convolution-Neural-Network-Training/blob/master/pictuers/pic3.png)
+
  &nbsp;&nbsp;&nbsp;&nbsp;We observe similar behavior between the 2 implementations. While the training is closeto the same results with slightly worst accuracy and loss, the testing results appear to be a bit unstable. It's worth noting that the NumPy version can give a bit better results in case we use batch size 100, but it is common for power of 2 batch sizes to offer better runtime so 128 was the one used to execute this example.
 ### Conv Layer
  &nbsp;&nbsp;&nbsp;&nbsp;The first layer of the network is a Conv layer with 12 3x3 filters. The input of this layer is four-dimensional tensor with shape [batch, channel, height, width]=[batch, 1, 28, 28] and the output is [batch,12,26,26]. Once the Convolution is completed, the output goes through the ReLu activation function and the result is forwarded to the next layer.\ 
  &nbsp;&nbsp;&nbsp;&nbsp;On this layer, a convolution is applied to small regions of an image, sampling the values of pixels in this region, and converting it into a single pixel. It is applied to each region of pixels in the image, to produce a new image. The idea is that pixels in the new image incorporate information about the surrounding pixels, thus reflecting how well a feature is represented in that area. \
  &nbsp;&nbsp;&nbsp;&nbsp;Using a 12 3x3 filters means that we will have a total of 108 weights, which alongside with biases, are used for classification during the forward phase and are updated during the backpropagation phase. These weights are initialized using the He initialization. This initialization technique was used to counter the vanishing/exploding weights problem, which resulted in the network’s performance slowly declining to 0. Another positive effect was that since normal distribution was replaced by the He initialization, the network results were improved after the 2nd epoch for around 50 % accuracy to 75%. \
  &nbsp;&nbsp;&nbsp;&nbsp;ReLU is the most commonly used activation function in neural networks, especially in CNNs. ReLU stands for rectified linear unit, it is defined as y=max(0,x). Visually, it looks like the following:\
---pic4\
+ 
+![ReLu](https://github.com/gflengas/Convolution-Neural-Network-Training/blob/master/pictuers/pic4.png)
+
 It’s cheap to compute as there is no complicated math. The model can therefore take less time to train or run. 
 ### Maxpool Layer
  &nbsp;&nbsp;&nbsp;&nbsp;The convolutional layers aren’t supposed to reduce the size of the image significantly. Instead, they make sure that each pixel reflects its neighbors. This makes it possible to performdownscaling, through pooling, without losing important information.\
@@ -41,7 +47,9 @@ Since we are working with batches, we need to make predictions over multiple exa
 
 ### Backpropagation
  &nbsp;&nbsp;&nbsp;&nbsp; When we use a feed-forward neural network to accept an input x and produce an output ŷ, information flows forward through the network. The inputs x provide the initial information that then propagates up to the hidden units at each layer and finally produces ŷ. This is called forward propagation. During training, forward propagation can continue onward until it produces a scalar cost J(θ). The back-propagation algorithm, often simply called backprop, allows the information from the cost to then flow backward through the network, tocompute the gradient. Computing an analytical expression for the gradients straight forward, but numerically evaluating such an expression can be computationally expensive. The back-propagation algorithm does so using a simple and inexpensive procedure.\
- --pic5 \
+ 
+![network flow](https://github.com/gflengas/Convolution-Neural-Network-Training/blob/master/pictuers/pic5.png)
+
  The parameters of the neural network are adjusted according to the following formulae:\
 <img src="https://latex.codecogs.com/gif.latex?W^{[l]}={W^{[l]}-adW^{[l]}}&space;\newline&space;b^{[l]}={b^{[l]}-adb^{[l]}}" title="W^{[l]}={W^{[l]}-adW^{[l]}} \newline b^{[l]}={b^{[l]}-adb^{[l]}}" />
 
