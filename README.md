@@ -65,6 +65,6 @@ Since we are working with batches, we need to make predictions over multiple exa
   &nbsp;&nbsp;&nbsp;&nbsp;Conv layer is working similarly to the FC layer. The gradient is first multiplied with the derivative of the ReLu function and the result is used to calculate the dW and db of the FC layer along with the gradient that will be passed to the next layer.
 
 ### References 
-[Geoffrey E. Hinton Alex Krizhevsky Ilya Sutskever.ImageNet Classificationwith Deep Convolutional Neural Networks. 2012.](https://papers.nips.cc/paper/4824-imagenet-classification-with-deep-convolutional-neural-networks.pdf)
+[Geoffrey E. Hinton Alex Krizhevsky Ilya Sutskever.ImageNet Classificationwith Deep Convolutional Neural Networks. 2012.](https://papers.nips.cc/paper/4824-imagenet-classification-with-deep-convolutional-neural-networks.pdf)<br/>
 [Gradient BasedLearning Applied to Document Recognition](http://vision.stanford.edu/cs598_spring07/papers/Lecun98.pdf)<br/>
 [Delving Deep into Rectifiers:Surpassing Human-Level Performance on ImageNet Classification](https://arxiv.org/pdf/1502.01852.pdf)
