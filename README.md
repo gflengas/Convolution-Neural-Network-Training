@@ -66,5 +66,5 @@ Since we are working with batches, we need to make predictions over multiple exa
 
 ### References 
 [Geoffrey E. Hinton Alex Krizhevsky Ilya Sutskever.ImageNet Classificationwith Deep Convolutional Neural Networks. 2012.](https://papers.nips.cc/paper/4824-imagenet-classification-with-deep-convolutional-neural-networks.pdf)<br/>
-[Gradient BasedLearning Applied to Document Recognition](http://vision.stanford.edu/cs598_spring07/papers/Lecun98.pdf)<br/>
-[Delving Deep into Rectifiers:Surpassing Human-Level Performance on ImageNet Classification](https://arxiv.org/pdf/1502.01852.pdf)
+[Gradient Based Learning Applied to Document Recognition](http://vision.stanford.edu/cs598_spring07/papers/Lecun98.pdf)<br/>
+[Delving Deep into Rectifiers: Surpassing Human-Level Performance on ImageNet Classification](https://arxiv.org/pdf/1502.01852.pdf)
